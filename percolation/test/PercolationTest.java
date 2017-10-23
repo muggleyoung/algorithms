@@ -29,6 +29,62 @@ class PercolationTest {
         assertEquals(1, percolation.numberOfOpenSites());
     }
 
+    @Test
+    void input2NoPercolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input2-no.txt";
+        Percolation percolation = run(fileName);
+        assertFalse(percolation.percolates());
+        assertEquals(2, percolation.numberOfOpenSites());
+    }
+
+    @Test
+    void input2Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input2.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+        assertEquals(3, percolation.numberOfOpenSites());
+    }
+
+    @Test
+    void input3Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input3.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+        assertEquals(6, percolation.numberOfOpenSites());
+    }
+
+    @Test
+    void input4Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input4.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+        assertEquals(8, percolation.numberOfOpenSites());
+    }
+
+    @Test
+    void input5Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input5.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+        assertEquals(25, percolation.numberOfOpenSites());
+    }
+
+    @Test
+    void input6Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input6.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+        assertEquals(18, percolation.numberOfOpenSites());
+    }
+
+    @Test
+    void input8DupsPercolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input8-dups.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+        assertEquals(36, percolation.numberOfOpenSites());
+    }
+
     private Percolation run(String fileName) {
         List<String> lines = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
@@ -40,7 +96,10 @@ class PercolationTest {
         Percolation percolation = new Percolation(grid);
 
         for (int i = 1; i < lines.size(); i++) {
-            String[] site = lines.get(i).split(" ");
+            if (lines.get(i).isEmpty()) {
+                continue;
+            }
+            String[] site = lines.get(i).trim().split("\\s+");
             int row = Integer.parseInt(site[0]);
             int column = Integer.parseInt(site[1]);
             percolation.open(row, column);

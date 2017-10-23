@@ -4,6 +4,9 @@ public class Percolation {
     private boolean[][] opened;
     private int openPositions;
 
+    private int top;
+    private int bottom;
+
     public Percolation(int n) {
         if (n <= 0) {
             throw new IllegalArgumentException("n can not be less than 0");
@@ -11,7 +14,7 @@ public class Percolation {
         this.n = n;
 
         this.opened = new boolean[n + 1][n + 1];
-        this.roots = new int[n + 1];
+        this.roots = new int[n * n + 2];
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
@@ -19,6 +22,11 @@ public class Percolation {
                 opened[i][j] = false;
             }
         }
+
+        top = 0;
+        bottom = n * n + 1;
+        roots[0] = top;
+        roots[bottom] = bottom;
 
         this.openPositions = 0;
     }
@@ -29,7 +37,13 @@ public class Percolation {
 
         int index1 = getIndex(row, col);
 
-        if ((row != 1) && (isOpen(row - 1, col))) {
+        if (row == 1) {
+            connect(index1, top);
+        }
+        if (row == n) {
+            connect(index1, bottom);
+        }
+        if ((row > 1) && (isOpen(row - 1, col))) {
             int index2 = getIndex(row - 1, col);
             connect(index1, index2);
         }
@@ -37,7 +51,7 @@ public class Percolation {
             int index2 = getIndex(row + 1, col);
             connect(index1, index2);
         }
-        if ((col != 1) && (isOpen(row, col - 1))) {
+        if ((col > 1) && (isOpen(row, col - 1))) {
             int index2 = getIndex(col - 1, col);
             connect(index1, index2);
         }
@@ -53,12 +67,19 @@ public class Percolation {
 
     public boolean isFull(int row, int col) {
         int index = row * col;
-        return (findRoot(index) >= 1 || findRoot(index) <= n);
+        return (isOpen(row, col) && (findRoot(index) >= 1 && findRoot(index) <= n));
     }
 
     private void connect(int index1, int index2) {
-        if (findRoot(index1) != findRoot(index2)) {
-            roots[index1] = findRoot(index2);
+        int root1 = findRoot(index1);
+        int root2 = findRoot(index2);
+
+        if (root1 == top || root1 == bottom) {
+            roots[root2] = root1;
+        } else if (root2 == top || root2 == bottom) {
+            roots[root1] = root2;
+        } else {
+            roots[root1] = root2;
         }
     }
 
@@ -78,12 +99,7 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        for (int j = 1; j <= n; j++) {
-            if (opened[n][j] && isFull(n, j)) {
-                return true;
-            }
-        }
-        return false;
+        return findRoot(top) == findRoot(bottom);
     }
 
     // test client (optional)
