@@ -18,14 +18,15 @@ public class Percolation {
 
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                roots[((i - 1) * n) + j] = ((i - 1) * n) + j;
+                int index = getIndex(i, j);
+                roots[index] = index;
                 opened[i][j] = false;
             }
         }
 
         top = 0;
         bottom = n * n + 1;
-        roots[0] = top;
+        roots[top] = top;
         roots[bottom] = bottom;
 
         this.openPositions = 0;
@@ -52,11 +53,11 @@ public class Percolation {
             connect(index1, index2);
         }
         if ((col > 1) && (isOpen(row, col - 1))) {
-            int index2 = getIndex(col - 1, col);
+            int index2 = getIndex(row, col - 1);
             connect(index1, index2);
         }
         if ((col < n) && (isOpen(row, col + 1))) {
-            int index2 = getIndex(col + 1, col);
+            int index2 = getIndex(row, col + 1);
             connect(index1, index2);
         }
     }
@@ -83,8 +84,8 @@ public class Percolation {
         }
     }
 
-    private int getIndex(int row1, int col1) {
-        return row1 * col1;
+    private int getIndex(int row, int col) {
+        return (row - 1) * n + col;
     }
 
     private int findRoot(int i) {
