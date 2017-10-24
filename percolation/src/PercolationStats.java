@@ -15,8 +15,8 @@ public class PercolationStats {
             int row;
             int col;
             while (!percolation.percolates()) {
-                row = StdRandom.uniform(n);
-                col = StdRandom.uniform(n);
+                row = StdRandom.uniform(n) + 1;
+                col = StdRandom.uniform(n) + 1;
                 if (!percolation.isOpen(row, col)) {
                     percolation.open(row, col);
                 }
@@ -48,6 +48,10 @@ public class PercolationStats {
 
     // test client (described below)
     public static void main(String[] args) {
+        PercolationStats percolationStats = new PercolationStats(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        System.out.println("mean: " + percolationStats.mean());
+        System.out.println("stddev: " + percolationStats.stddev());
+        System.out.println("95% confidence interval: [" + percolationStats.confidenceHi() + ", " + percolationStats.confidenceLo() + "]");
     }
 
 }
