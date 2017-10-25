@@ -82,7 +82,7 @@ class PercolationTest {
         String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input8-dups.txt";
         Percolation percolation = run(fileName);
         assertTrue(percolation.percolates());
-        assertEquals(36, percolation.numberOfOpenSites());
+        assertEquals(34, percolation.numberOfOpenSites());
     }
 
     @Test
@@ -127,6 +127,7 @@ class PercolationTest {
             int row = Integer.parseInt(site[0]);
             int column = Integer.parseInt(site[1]);
             percolation.open(row, column);
+            percolation.isFull(row, column);
         }
         return percolation;
     }
