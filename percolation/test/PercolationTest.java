@@ -109,6 +109,20 @@ class PercolationTest {
         assertEquals(55, percolation.numberOfOpenSites());
     }
 
+    @Test
+    void input10Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input10.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+    }
+
+    @Test
+    void input20Percolation() {
+        String fileName = "/Users/rca/workspace/practice/algorithms/percolation/percolation-test/input20.txt";
+        Percolation percolation = run(fileName);
+        assertTrue(percolation.percolates());
+    }
+
     private Percolation run(String fileName) {
         List<String> lines = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(fileName))) {

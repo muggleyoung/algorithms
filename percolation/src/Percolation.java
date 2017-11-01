@@ -4,7 +4,8 @@ public class Percolation {
     private final int n;
     private boolean[][] opened;
     private int openPositions;
-    private final WeightedQuickUnionUF weightedQuickUnionUF;
+    private final WeightedQuickUnionUF weightedQuickUnionUFTop;
+    private final WeightedQuickUnionUF weightedQuickUnionUFBottom;
 
     private final int top;
     private final int bottom;
@@ -16,7 +17,8 @@ public class Percolation {
         }
 
         this.n = n;
-        this.weightedQuickUnionUF = new WeightedQuickUnionUF((n + 1) * (n + 1));
+        this.weightedQuickUnionUFTop = new WeightedQuickUnionUF((n + 1) * (n + 1));
+        this.weightedQuickUnionUFBottom = new WeightedQuickUnionUF((n + 1) * (n + 1));
         this.opened = new boolean[n + 1][n + 1];
 
         for (int i = 1; i <= n; i++) {
@@ -42,26 +44,31 @@ public class Percolation {
         int index1 = getIndex(row, col);
 
         if (row == 1) {
-            this.weightedQuickUnionUF.union(index1, top);
+            this.weightedQuickUnionUFTop.union(index1, top);
+            this.weightedQuickUnionUFBottom.union(index1, top);
         }
         if (row == n) {
-            this.weightedQuickUnionUF.union(index1, bottom);
+            this.weightedQuickUnionUFBottom.union(index1, bottom);
         }
         if ((row > 1) && (isOpen(row - 1, col))) {
             int index2 = getIndex(row - 1, col);
-            this.weightedQuickUnionUF.union(index1, index2);
+            this.weightedQuickUnionUFTop.union(index1, index2);
+            this.weightedQuickUnionUFBottom.union(index1, index2);
         }
         if ((row < n) && (isOpen(row + 1, col))) {
             int index2 = getIndex(row + 1, col);
-            this.weightedQuickUnionUF.union(index1, index2);
+            this.weightedQuickUnionUFTop.union(index1, index2);
+            this.weightedQuickUnionUFBottom.union(index1, index2);
         }
         if ((col > 1) && (isOpen(row, col - 1))) {
             int index2 = getIndex(row, col - 1);
-            this.weightedQuickUnionUF.union(index1, index2);
+            this.weightedQuickUnionUFTop.union(index1, index2);
+            this.weightedQuickUnionUFBottom.union(index1, index2);
         }
         if ((col < n) && (isOpen(row, col + 1))) {
             int index2 = getIndex(row, col + 1);
-            this.weightedQuickUnionUF.union(index1, index2);
+            this.weightedQuickUnionUFTop.union(index1, index2);
+            this.weightedQuickUnionUFBottom.union(index1, index2);
         }
     }
 
@@ -73,7 +80,8 @@ public class Percolation {
     public boolean isFull(int row, int col) {
         inRange(row, col);
         int index = getIndex(row, col);
-        return (isOpen(row, col) && (this.weightedQuickUnionUF.connected(index, top)));
+        return (isOpen(row, col)
+                && this.weightedQuickUnionUFTop.connected(index, top));
     }
 
     private int getIndex(int row, int col) {
@@ -91,6 +99,6 @@ public class Percolation {
     }
 
     public boolean percolates() {
-        return this.weightedQuickUnionUF.connected(top, bottom);
+        return this.weightedQuickUnionUFBottom.connected(top, bottom);
     }
 }
