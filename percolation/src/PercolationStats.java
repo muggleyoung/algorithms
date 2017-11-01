@@ -8,6 +8,10 @@ public class PercolationStats {
 
     // perform trials independent experiments on an n-by-n grid
     public PercolationStats(int n, int trials) {
+        if (n < 1 || trials < 1) {
+            throw new IllegalArgumentException();
+        }
+
         this.trials = trials;
 
         this.fractions = new double[trials + 1];
