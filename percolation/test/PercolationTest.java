@@ -141,6 +141,10 @@ class PercolationTest {
             int row = Integer.parseInt(site[0]);
             int column = Integer.parseInt(site[1]);
             percolation.open(row, column);
+            if (i == 57) {
+                System.out.println("==============");
+                System.out.println(percolation.isFull(9, 1));
+            }
             percolation.isFull(row, column);
         }
         return percolation;

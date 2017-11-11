@@ -5,6 +5,8 @@ public class PercolationStats {
     private static final double CONFIDENCE_95 = 1.96;
     private final double[] fractions;
     private final int trials;
+    private final double mean;
+    private final double stddev;
 
     // perform trials independent experiments on an n-by-n grid
     public PercolationStats(int n, int trials) {
@@ -14,8 +16,8 @@ public class PercolationStats {
 
         this.trials = trials;
 
-        this.fractions = new double[trials + 1];
-        for (int i = 1; i <= trials; i++) {
+        this.fractions = new double[trials];
+        for (int i = 0; i < trials; i++) {
             Percolation percolation = new Percolation(n);
             int row;
             int col;
@@ -29,26 +31,28 @@ public class PercolationStats {
             int openSites = percolation.numberOfOpenSites();
             this.fractions[i] = (double) openSites / (n * n);
         }
+        this.mean = StdStats.mean(fractions);
+        this.stddev = StdStats.stddev(fractions);
     }
 
     // sample mean of percolation threshold
     public double mean() {
-        return StdStats.mean(fractions);
+        return this.mean;
     }
 
     // sample standard deviation of percolation threshold
     public double stddev() {
-        return StdStats.stddev(fractions);
+        return this.stddev;
     }
 
     // low  endpoint of 95% confidence interval
     public double confidenceLo() {
-        return mean() - (CONFIDENCE_95 * stddev() / Math.sqrt(trials));
+        return mean - (CONFIDENCE_95 * stddev / Math.sqrt(trials));
     }
 
     // high endpoint of 95% confidence interval
     public double confidenceHi() {
-        return mean() + (CONFIDENCE_95 * stddev() / Math.sqrt(trials));
+        return mean + (CONFIDENCE_95 * stddev / Math.sqrt(trials));
     }
 
     // test client (described below)
