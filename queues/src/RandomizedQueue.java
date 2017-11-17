@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
-    private Node tail;
+    private Node head;
     private int size;
 
     // construct an empty randomized queue
@@ -27,24 +27,22 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new IllegalArgumentException();
         }
         int random = StdRandom.uniform(size + 1);
-        Node current = tail;
-        if (tail == null) {
-            tail = new Node();
-            tail.item = item;
-            tail.next = null;
+        Node current = head;
+        if (head == null) {
+            head = new Node();
+            head.item = item;
+            head.next = null;
         } else if (random == 0) {
-            tail.item = item;
-            tail.next = null;
-            current.next = tail;
+            head.item = item;
+            head.next = current;
         } else {
             for (int i = 1; i < random; i++) {
                 current = current.next;
             }
             Node added = new Node();
-            Node temp = current.next;
             added.item = item;
+            added.next = current.next;
             current.next = added;
-            added.next = temp;
         }
         size++;
     }
@@ -54,13 +52,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        Node current = tail;
+        Node current = head;
         if (size != 1) {
-            tail = current.next;
-            tail.next = null;
+            head = head.next;
         }
         size--;
-        return tail.item;
+        return current.item;
     }
 
     // return a random item (but do not remove it)
@@ -68,7 +65,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        return tail.item;
+        return head.item;
     }
 
     // return an independent iterator over items in random order
@@ -82,7 +79,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomizedQueueIterator implements Iterator<Item> {
-        private Node current = tail;
+        private Node current = head;
 
         public RandomizedQueueIterator() {
         }

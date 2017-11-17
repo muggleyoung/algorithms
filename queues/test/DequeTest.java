@@ -135,4 +135,60 @@ class DequeTest {
         Deque<Integer> deque = new Deque<>();
         assertThrows(NoSuchElementException.class, deque::removeLast);
     }
+
+    @Test
+    void test1() {
+        Deque<Integer> deque = new Deque<>();
+        deque.addFirst(0);
+        deque.removeFirst();
+        deque.addFirst(2);
+        deque.removeFirst();
+        assertTrue(deque.isEmpty());
+        assertTrue(deque.isEmpty());
+        deque.addFirst(6);
+        deque.addFirst(7);
+        deque.removeFirst();
+        deque.removeFirst();
+    }
+
+    @Test
+    void test2() {
+        Deque<Integer> deque = new Deque<>();
+        deque.addFirst(0);
+        deque.addFirst(1);
+        deque.addFirst(2);
+        deque.addFirst(3);
+        deque.addFirst(4);
+        deque.addFirst(5);
+        deque.addFirst(6);
+        deque.addFirst(7);
+        deque.addFirst(8);
+        deque.removeLast();
+    }
+
+    @Test
+    void test3() {
+        Deque<Integer> deque = new Deque<>();
+        assertTrue(deque.isEmpty());
+        deque.addFirst(1);
+        deque.addFirst(2);
+        deque.addFirst(3);
+        deque.addFirst(4);
+        deque.removeLast();
+    }
+
+    @Test
+    void test4() {
+        Deque<Integer> deque = new Deque<>();
+        assertTrue(deque.isEmpty());
+        deque.addFirst(1);
+        deque.addFirst(2);
+        deque.addFirst(3);
+        deque.addFirst(4);
+        assertFalse(deque.isEmpty());
+        deque.addFirst(6);
+        deque.addFirst(7);
+        assertFalse(deque.isEmpty());
+        deque.removeLast();
+    }
 }
