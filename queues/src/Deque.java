@@ -17,9 +17,6 @@ public class Deque<Item> implements Iterable<Item> {
             this.previous = node.previous;
         }
 
-        public Node() {
-        }
-
         public Node(Item item, Node previous, Node next) {
             this.item = item;
             this.next = next;
@@ -55,11 +52,6 @@ public class Deque<Item> implements Iterable<Item> {
         }
         if (size == 0) {
             addFirstNode(item);
-        } else if (size == 1) {
-            Node current = new Node(item, null, head);
-            head.previous = current;
-            tail.previous = head;
-            head = current;
         } else {
             Node current = new Node(item, null, head);
             head.previous = current;
@@ -81,11 +73,6 @@ public class Deque<Item> implements Iterable<Item> {
         }
         if (size == 0) {
             addFirstNode(item);
-        } else if (size == 1) {
-            Node current = new Node(item, tail, null);
-            tail.next = current;
-            head.next = tail;
-            tail = current;
         } else {
             Node current = new Node(item, tail, null);
             tail.next = current;
@@ -99,7 +86,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        Node current = new Node(head);
+        Node current = head;
         if (!head.equal(tail)) {
             head = current.next;
             head.previous = null;
@@ -116,7 +103,7 @@ public class Deque<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        Node current = new Node(tail);
+        Node current = tail;
         if (!head.equal(tail)) {
             tail = current.previous;
             tail.next = null;
@@ -151,7 +138,6 @@ public class Deque<Item> implements Iterable<Item> {
             if (!hasNext()) throw new NoSuchElementException();
             Item item = current.item;
             current = current.next;
-            current.next.previous = current;
             return item;
         }
     }

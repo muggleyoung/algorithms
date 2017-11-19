@@ -191,4 +191,20 @@ class DequeTest {
         assertFalse(deque.isEmpty());
         deque.removeLast();
     }
+
+    @Test
+    void test5() {
+        Deque<Integer> deque = new Deque<>();
+        assertTrue(deque.isEmpty());
+        deque.addFirst(1);
+        deque.removeLast();
+        assertTrue(deque.isEmpty());
+        deque.addFirst(4);
+        deque.removeLast();
+        deque.addFirst(6);
+        assertFalse(deque.isEmpty());
+        deque.addFirst(8);
+        assertEquals(6, deque.removeLast().intValue());
+        assertEquals(8, deque.removeLast().intValue());
+    }
 }

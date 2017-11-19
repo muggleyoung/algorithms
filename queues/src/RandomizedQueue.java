@@ -27,21 +27,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             throw new IllegalArgumentException();
         }
         int random = StdRandom.uniform(size + 1);
-        Node current = head;
-        if (head == null) {
-            head = new Node();
-            head.item = item;
-            head.next = null;
+        if (size == 0) {
+            head = new Node(item, null);
         } else if (random == 0) {
-            head.item = item;
-            head.next = current;
+            Node added = new Node(item, head);
+            head = added;
         } else {
-            for (int i = 1; i < random; i++) {
+            Node current = head;
+            for (int i = 2; i <= random; i++) {
                 current = current.next;
             }
-            Node added = new Node();
-            added.item = item;
-            added.next = current.next;
+            Node added = new Node(item, current.next);
             current.next = added;
         }
         size++;
@@ -52,7 +48,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         if (size == 0) {
             throw new NoSuchElementException();
         }
-        Node current = head;
+        Node current = new Node(head);
         if (size != 1) {
             head = head.next;
         }
@@ -76,6 +72,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     private class Node {
         private Item item;
         private Node next;
+
+        public Node(Item item, Node next) {
+            this.item = item;
+            this.next = next;
+        }
+
+        public Node(Node node) {
+            this.item = node.item;
+            this.next = node.next;
+        }
     }
 
     private class RandomizedQueueIterator implements Iterator<Item> {
@@ -100,7 +106,4 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
     }
 
-    // unit testing (optional)
-    public static void main(String[] args) {
-    }
 }

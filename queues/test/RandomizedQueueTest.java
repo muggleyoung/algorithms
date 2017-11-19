@@ -62,4 +62,29 @@ class RandomizedQueueTest {
         int actualItem = randomizedQueue.dequeue();
         assertEquals(item, actualItem);
     }
+
+    @Test
+    void test1() {
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+        rq.enqueue(3);
+        rq.enqueue(3);
+        rq.enqueue(2);
+        rq.enqueue(1);
+        rq.enqueue(4);
+    }
+
+    @Test
+    void test2() {
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+        rq.enqueue(287);
+        rq.enqueue(405);
+        rq.enqueue(430);
+        rq.enqueue(150);
+        rq.dequeue();
+        rq.enqueue(310);
+        rq.dequeue();
+        rq.enqueue(204);
+        rq.enqueue(356);
+        rq.enqueue(461);
+    }
 }
